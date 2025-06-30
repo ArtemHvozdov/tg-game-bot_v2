@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/ArtemHvozdov/tg-game-bot_v2/internal/config"
+	"github.com/ArtemHvozdov/tg-game-bot_v2/internal/database"
 	"github.com/ArtemHvozdov/tg-game-bot_v2/pkg/utils"
 	"github.com/joho/godotenv"
 )
@@ -30,9 +31,14 @@ func main() {
 
 	dbUrl := dataDir + dataFile
 
-	db, err := database.NewDatabase(cfg.DatabaseURL)
+	db, err := database.NewDatabase(dbUrl)
 	if err != nil {
 		logger.Fatalf("Failed to connect to database: %v", err)
 	}
 	defer db.Close()
+
+		// Run database migrations
+	if err := db.Migrate(); err != nil {
+		logger.Fatalf("Failed to run database migrations: %v", err)
+	}
 }
