@@ -78,7 +78,7 @@ type Config struct {
 }
 
 // LoadConfig load configuration from .env file
-func LoadConfig() *Config {
+func LoadConfig() (*Config, error) {
 	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
@@ -120,5 +120,5 @@ func LoadConfig() *Config {
 		DatabaseFile:  dbFile,
 		Mode:		   mode,
 		Durations: 	   durations,
-	}
+	}, nil
 }
